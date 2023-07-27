@@ -1,0 +1,48 @@
+# Security
+ServerTokens OS
+ServerSignature On
+TraceEnable On
+
+ServerName "<%= $facts[fqdn] %>"
+ServerRoot "/etc/httpd"
+PidFile run/httpd.pid
+Timeout 120
+KeepAlive On
+MaxKeepAliveRequests 0
+KeepAliveTimeout 65
+LimitRequestFieldSize 8190
+
+
+User apache
+Group apache
+
+AccessFileName .htaccess
+<FilesMatch "^\.ht">
+    Require all denied
+</FilesMatch>
+
+<Directory />
+  Options FollowSymLinks
+  AllowOverride None
+</Directory>
+
+
+HostnameLookups Off
+ErrorLog "/var/log/httpd/error_log"
+LogLevel warn
+EnableSendfile On
+
+#Listen 80
+
+
+Include "<%= $dispatcher_conf_dir %>/*.load"
+Include "<%= $dispatcher_conf_dir %>/*.conf"
+Include "/etc/httpd/conf/ports.conf"
+
+LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+LogFormat "%h %l %u %t \"%r\" %>s %b" common
+LogFormat "%{Referer}i -> %U" referer
+LogFormat "%{User-agent}i" agent
+LogFormat "%{X-Forwarded-For}i %l %u %t \"%r\" %s %b \"%{Referer}i\" \"%{User-agent}i\"" forwarded
+
+IncludeOptional "<%= $virtual_hosts_dir %>/*.conf"

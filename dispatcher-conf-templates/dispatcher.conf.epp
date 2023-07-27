@@ -1,0 +1,12 @@
+# ************************************
+# Managed by Puppet AEM Module
+# ************************************
+<IfModule dispatcher_module>
+    DispatcherConfig            "<%= $dispatcher_conf_dir %>/dispatcher.farms.any"
+    DispatcherLog               /var/log/httpd/dispatcher.log
+    DispatcherLogLevel          warn
+    DispatcherNoServerHeader    off
+    DispatcherDeclineRoot       off
+    DispatcherUseProcessedURL   1
+    DispatcherPassError         0
+</IfModule>
